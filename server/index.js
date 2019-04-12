@@ -67,9 +67,9 @@ function startServer() {
     }
   });
 
-  server.listen(9142);
+  server.listen(8314);
 
-  console.log("Listening on port 9142");
+  console.log("Listening on port 8314");
 }
 
 function vote(request, response){
