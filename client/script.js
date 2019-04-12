@@ -1,5 +1,36 @@
 'use strict';
 
+var chosen = -1;
+var id = 0;
+
+window.onload = function () {
+	getData().then(function(response){
+		id = (new Date()).getTime();
+		let board = response['board'];
+		let plays = response['plays'];
+
+		drawBoard();
+		drawPieces(board);
+		let sz = plays.length;
+
+		for(let i=0; i<sz;i++){
+			createPlay(plays[i],i);
+		}
+	})
+}
+
+document.getElementById('submit').onclick = function() {
+	if(chosen == -1){
+		console.log(chosen);
+		document.getElementById('info').innerHTML = "Invalid Submission";
+		return;
+	}
+	srv_vote(id,chosen).then(function(response){
+		if(response['error']) document.getElementById('info').innerHTML = "Submission ERROR";
+		else document.getElementById('info').innerHTML = "Submission Successful";
+	})
+}
+
 /******************************************************************************/
 /******************************************************************************/
 
@@ -62,64 +93,55 @@ function drawBoard () {
 	for(let i=0;i<8;i++){
 		for(let j=0;j<8;j++){
 			if((i+j)%2 != 0){
-				drawSquare(i,j,"lightgray");
+				drawSquare(j,i,"lightgray");
 			}
-			else drawSquare(i,j,"white");
+			else drawSquare(j,i,"white");
 		}
 	}
 }
 
-function drawPieces(){
+function drawPiece(board,i,j){
+	if(board[i][j] == 1)
+		drawCircle(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "darkgray");
+	else if(board[i][j] == -1)
+		drawCircle(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "LightCoral");
+	else if (board[i][j] > 0) {
+		drawKing(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "#565656");
+	}
+	else if (board[i][j] < 0) {
+		drawKing(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "FireBrick");
+	}
+}
+
+function drawPieces(board){
 	for(let i=0;i<8;i++){
 		for(let j=0;j<8;j++){
-			if(board[i][j] == 1)
-				drawCircle(i*sectionSize + sectionSize/2,j*sectionSize + sectionSize/2, "darkgray");
-			else if(board[i][j] == -1)
-				drawCircle(i*sectionSize + sectionSize/2,j*sectionSize + sectionSize/2, "LightCoral");
-			else if (board[i][j] > 0) {
-				drawKing(i*sectionSize + sectionSize/2,j*sectionSize + sectionSize/2, "#565656");
-			}
-			else if (board[i][j] < 0) {
-				drawKing(i*sectionSize + sectionSize/2,j*sectionSize + sectionSize/2, "FireBrick");
-			}
+			drawPiece(board,i,j);
 		}
 	}
 }
-
-drawBoard();
-
-let board = [
-  [0, 1, 0, 0, 0, -2, 0, -1],
-  [1, 0, 2, 0, 0,  0, -1, 0],
-  [0, 1, 0, 0, 0, -1, 0, -1],
-  [1, 0, 1, 0, 0,  0,-1,  0],
-  [0, 1, 0, 0, 0, -1, 0, -1],
-  [1, 0, 1, 0, 0,  0,-1,  0],
-  [0, 1, 0, 0, 0, -1, 0, -1],
-  [1, 0, 1, 0, 0,  0, -1, 0]
-];
-
-drawPieces(board);
 
 /******************************************************************************/
 /******************************************************************************/
 
 const plays = document.getElementById('plays');
 
-function createPlay(piece, codes, play){
+function createPlay(pieces, playId){
 	let li = document.createElement("li");
 	li.classList.add("play");
-	li.id = play;
+	li.id = playId;
 
 	let span= document.createElement("div");
 	span.classList.add("span");
-	span.innerHTML = "(" + piece[0] + "," + piece[1] + ")";
+	span.innerHTML = pieces[0];
+	for(let i=1;i<pieces.length;i++) span.innerHTML += "-" + pieces[i];
 
 	let input= document.createElement("input");
 	input.classList.add("radio");
 	input.type = "radio";
 	input.name= "radio";
-	input.id = "radio "+play;
+	input.id = "radio "+ playId;
+	input.playId = playId;
 
 	li.appendChild(span);
 	li.appendChild(input);
@@ -129,13 +151,8 @@ function createPlay(piece, codes, play){
 	li.onclick = function(){
 		document.getElementById("radio " + this.id).click();
 	}
-}
 
-//lst_plays in form list of list of places
-
-let lst_plays = [[0,1],[0,2],[0,3]]
-let sz = lst_plays.length;
-
-for(let i=0; i<sz;i++){
-	createPlay(lst_plays[i],0,i);
+	input.onclick = function(){
+		if(this.checked) chosen = this.playId;
+	}
 }

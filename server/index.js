@@ -5,7 +5,7 @@ const path = require('path');
 
 const headers = require('./headers').headers;
 
-var board;
+var board = [];
 var plays = [];
 var ids = new Set();
 var counter =  [];
@@ -14,8 +14,12 @@ function main(input) {
     //Enter your code here
     // var arr = input.split("")
     input = input.split('\n');
-    input.pop();
-    console.log(input);
+
+    board = JSON.parse(input[0]);
+    plays = JSON.parse(input[1]);
+
+    for(let i = 0;i<plays.length; i++) counter.push(0);
+    startServer();
 }
 
 process.stdin.resume();
@@ -86,7 +90,11 @@ function vote(request, response){
     }
 
     counter[query.play] += 1;
-    ids.push(query.id);
+    ids.add(query.id);
+
+    s = "";
+    for(let i=0;i<counter.length;i++) s+="["+i+","+counter[i]+"]"
+    console.log(s);
 
     response.writeHead(200, headers['plain']);
     response.write(JSON.stringify({}));

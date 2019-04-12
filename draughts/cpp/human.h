@@ -21,8 +21,10 @@ public:
 
   int getInput(int sz);
   void search();
-  void printIndex();
   bool inRange(int x, int i, int j);
+
+  void boardPrint();
+  void playsPrint();
 };
 
 #endif // HUMAN_H

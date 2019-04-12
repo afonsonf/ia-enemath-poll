@@ -11,7 +11,7 @@ function postData(url = '', data = {}) {
     .catch(error => console.error(error));
 }
 
-function getData(url = ''){
+function getData(){
   return fetch(url)
   .then(response => response.json()) // parses response to JSON
   .catch(error => console.error(error));
@@ -20,6 +20,5 @@ function getData(url = ''){
 function srv_vote(id, play) {
     let data = {"id": id, "play": play};
     //console.log(nick, pass);
-
-    return postData(url + "/vote",data);
+    return postData(url + "/vote", data);
 }
