@@ -1,10 +1,22 @@
 'use strict';
 
+var blue = [];
 var chosen = -1;
 var id = 0;
 
 window.onload = function () {
-	getData().then(function(response){
+		id = (new Date()).getTime();
+		let board = [[0,-1,0,-1,0,-1,0,-1],[-1,0,-1,0,-1,0,-1,0],[0,-1,0,0,0,0,0,-1],[0,0,-1,0,1,0,0,0],[0,0,0,0,0,0,0,0],[1,0,0,0,0,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0]];
+		let plays = [["B6","A5"],["C5","B4"],["C5","D4"],["C7","D6"],["E7","D6"],["E7","F6"],["G7","F6"],["H6","G5"]];
+
+		drawBoard();
+		drawPieces(board);
+		let sz = plays.length;
+
+		for(let i=0; i<sz;i++){
+			createPlay(plays[i],i);
+		}
+	/*getData().then(function(response){
 		id = (new Date()).getTime();
 		let board = response['board'];
 		let plays = response['plays'];
@@ -16,7 +28,7 @@ window.onload = function () {
 		for(let i=0; i<sz;i++){
 			createPlay(plays[i],i);
 		}
-	})
+	});*/
 }
 
 document.getElementById('submit').onclick = function() {
@@ -78,7 +90,14 @@ function drawCircle(i,j,color){
 	drawCircle_aux(i-2,j,color);
 }
 
-function drawSquare(i,j,color){
+function drawSquare(pos,mycolor){
+	let color;
+	const i = pos.charCodeAt(0)-"A".charCodeAt(0);
+	const j = "8".charCodeAt(0)-pos.charCodeAt(1);
+	if((i+j)%2 != 0 && !mycolor) color =  "lightgray";
+	else if(!mycolor) color = "white";
+	else color = mycolor;
+
 	context.beginPath();
 	context.rect(i*sectionSize,j*sectionSize,sectionSize,sectionSize);
 	context.fillStyle = color;
@@ -86,16 +105,13 @@ function drawSquare(i,j,color){
 
 	context.fillStyle = "black";
 	context.font = "12px Arial";
-	context.fillText(String.fromCharCode(i+"A".charCodeAt(0))+""+(8-j),i*sectionSize,j*sectionSize+10);
+	context.fillText(pos,i*sectionSize,j*sectionSize+10);
 }
 
 function drawBoard () {
 	for(let i=0;i<8;i++){
 		for(let j=0;j<8;j++){
-			if((i+j)%2 != 0){
-				drawSquare(j,i,"lightgray");
-			}
-			else drawSquare(j,i,"white");
+			drawSquare(String.fromCharCode(i+"A".charCodeAt(0))+""+(8-j));
 		}
 	}
 }
@@ -142,6 +158,7 @@ function createPlay(pieces, playId){
 	input.name= "radio";
 	input.id = "radio "+ playId;
 	input.playId = playId;
+	input.pieces = pieces;
 
 	li.appendChild(span);
 	li.appendChild(input);
@@ -153,6 +170,10 @@ function createPlay(pieces, playId){
 	}
 
 	input.onclick = function(){
-		if(this.checked) chosen = this.playId;
+		if(this.checked){
+			chosen = this.playId;
+			for(let i=0;i<blue.length;i++) drawSquare(blue[i]);
+			for(let i=0;i<this.pieces.length;i++) drawSquare(this.pieces[i], "lightblue");
+		}
 	}
 }
