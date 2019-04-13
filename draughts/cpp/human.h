@@ -25,6 +25,7 @@ public:
 
   void boardPrint();
   void playsPrint();
+  void lastPrint();
 };
 
 #endif // HUMAN_H

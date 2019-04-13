@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <signal.h>
 
 #include "board.h"
 #include "minimax.h"
@@ -7,7 +8,11 @@
 
 #define SEE true
 
+void handler_function(int sig){}
+
 int main(){
+  signal(SIGINT, handler_function);
+
   Board *board;
   bool first_player = true;
 

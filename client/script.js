@@ -4,12 +4,14 @@ let board;
 var blue = [];
 var chosen = -1;
 var id = 0;
+let last;
 
 window.onload = function () {
 	getData().then(function(response){
 		id = (new Date()).getTime();
 		board = response['board'];
 		let plays = response['plays'];
+		last = response['last'];
 
 		drawBoard();
 		let sz = plays.length;
@@ -17,6 +19,8 @@ window.onload = function () {
 		for(let i=0; i<sz;i++){
 			createPlay(plays[i],i);
 		}
+
+		createLast();
 	});
 }
 
@@ -160,6 +164,7 @@ function createPlay(pieces, playId){
 			for(let i=0;i<blue.length;i++){
 				drawSquare(blue[i]);
 			}
+			createLast();
 			blue = []
 			for(let i=0;i<this.pieces.length;i++){
 				drawSquare(this.pieces[i], "lightblue");
@@ -167,4 +172,10 @@ function createPlay(pieces, playId){
 			}
 		}
 	}
+}
+
+function createLast(){
+	 for(let i=0;i<last.length;i++){
+		 drawSquare(last[i], "lightgreen");
+	 }
 }

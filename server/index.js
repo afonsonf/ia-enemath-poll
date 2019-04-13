@@ -9,6 +9,7 @@ const port = 8134;
 
 var board = [];
 var plays = [];
+var last = [];
 var ids = new Set();
 var counter =  [];
 var best_i = 0;
@@ -21,6 +22,7 @@ function main(input) {
 
     board = JSON.parse(input[0]);
     plays = JSON.parse(input[1]);
+    last = JSON.parse(input[2]);
 
     for(let i = 0;i<plays.length; i++) counter.push(0);
     startServer();
@@ -45,7 +47,7 @@ function startServer() {
       case 'GET'://update
         //console.log("get");
         response.writeHead(200, headers['plain']);
-        response.write(JSON.stringify({"board": board, "plays": plays}));
+        response.write(JSON.stringify({"board": board, "plays": plays, "last": last}));
         response.end();
         break;
       case 'POST':

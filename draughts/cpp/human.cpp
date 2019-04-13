@@ -14,15 +14,17 @@ void Human::play(Play p){
 }
 
 int Human::getInput(int sz){
-  int index = -1;
+  long int res;
+  char s[100];
+  char *pEnd = NULL;
   while(1){
       printf("Choose a move: "); fflush(stdout);
-      scanf("%d",&index);
-
-      if(!inRange(index,0,sz-1)) printf("Invalid move\n");
+      memset(s,'\0',sizeof s); scanf("\n");scanf("%[^\n]s",s);
+      res = strtol(s,&pEnd,10);
+      if(*pEnd != '\0' || !inRange((int)res,0,sz-1)) printf("Invalid move\n");
       else break;
   }
-  return index;
+  return int(res);
 }
 
 void Human::boardPrint(){
@@ -88,6 +90,31 @@ void Human::playsPrint(){
   return;
 }
 
+void Human::lastPrint(){
+  Play last = board->playsStack.top();
+  board->rmplay();
+
+  std::vector<Pos> v;
+  Pos piece = last.piece;
+  v.push_back(piece);
+
+  for(int code :last.codes){
+    piece = board->play_aux(piece,code);
+    v.push_back(piece);
+  }
+  for(int code :last.codes) board->rmplay_aux();
+  board->play(last);
+
+  int sz = (int)v.size();
+  printf("[");
+  for(int j=0;j<sz-1;j++){
+    char c = 'A'+v[j].i;
+    printf("\"%c%d\",",c,v[j].j+1);
+  }
+  char c = 'A'+v[sz-1].i;
+  printf("\"%c%d\"]\n",c,v[sz-1].j+1);
+}
+
 void Human::search(){
   int index = -1;
 
@@ -97,6 +124,7 @@ void Human::search(){
   printf("\n");
   boardPrint();
   playsPrint();
+  lastPrint();
   printf("\n");
 
   char s[1000];
