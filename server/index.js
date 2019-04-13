@@ -5,10 +5,14 @@ const path = require('path');
 
 const headers = require('./headers').headers;
 
+const port = 8134;
+
 var board = [];
 var plays = [];
 var ids = new Set();
 var counter =  [];
+var best_i = 0;
+var best = 0;
 
 function main(input) {
     //Enter your code here
@@ -34,8 +38,6 @@ process.stdin.on("end", function () {
    main(stdin_input);
 });
 
-
-
 function startServer() {
   const server = http.createServer(function (request, response) {
     const purl = url.parse(request.url);
@@ -55,21 +57,20 @@ function startServer() {
             vote(request, response);
             break;
           default:
-            //console.log("error");
             response.writeHead(501, { 'Content-Type': "application/json", 'Access-Control-Allow-Origin': '*' });
             response.end();
             return;
         }
-        break;
+	break;
       default:
-        response.writeHead(501, { 'Content-Type': "application/json", 'Access-Control-Allow-Origin': '*' });
+	response.writeHead(501, { 'Content-Type': "application/json", 'Access-Control-Allow-Origin': '*' });
         response.end();
     }
   });
 
-  server.listen(8314);
+  server.listen(port);
 
-  console.log("Listening on port 8314");
+  console.log("Listening on port "+port);
 }
 
 function vote(request, response){
@@ -92,9 +93,14 @@ function vote(request, response){
     counter[query.play] += 1;
     ids.add(query.id);
 
+    if(counter[query.play] > best){
+      best = counter[query.play];
+      best_i = query.play;
+    }
+
     s = "";
     for(let i=0;i<counter.length;i++) s+="["+i+","+counter[i]+"]"
-    console.log(s);
+    console.log(s + " Most voted: "+best_i+" ("+best+" votes)");
 
     response.writeHead(200, headers['plain']);
     response.write(JSON.stringify({}));

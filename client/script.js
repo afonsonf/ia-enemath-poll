@@ -1,34 +1,23 @@
 'use strict';
 
+let board;
 var blue = [];
 var chosen = -1;
 var id = 0;
 
 window.onload = function () {
+	getData().then(function(response){
 		id = (new Date()).getTime();
-		let board = [[0,-1,0,-1,0,-1,0,-1],[-1,0,-1,0,-1,0,-1,0],[0,-1,0,0,0,0,0,-1],[0,0,-1,0,1,0,0,0],[0,0,0,0,0,0,0,0],[1,0,0,0,0,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0]];
-		let plays = [["B6","A5"],["C5","B4"],["C5","D4"],["C7","D6"],["E7","D6"],["E7","F6"],["G7","F6"],["H6","G5"]];
-
-		drawBoard();
-		drawPieces(board);
-		let sz = plays.length;
-
-		for(let i=0; i<sz;i++){
-			createPlay(plays[i],i);
-		}
-	/*getData().then(function(response){
-		id = (new Date()).getTime();
-		let board = response['board'];
+		board = response['board'];
 		let plays = response['plays'];
 
 		drawBoard();
-		drawPieces(board);
 		let sz = plays.length;
 
 		for(let i=0; i<sz;i++){
 			createPlay(plays[i],i);
 		}
-	});*/
+	});
 }
 
 document.getElementById('submit').onclick = function() {
@@ -94,6 +83,7 @@ function drawSquare(pos,mycolor){
 	let color;
 	const i = pos.charCodeAt(0)-"A".charCodeAt(0);
 	const j = "8".charCodeAt(0)-pos.charCodeAt(1);
+	console.log(i,j);
 	if((i+j)%2 != 0 && !mycolor) color =  "lightgray";
 	else if(!mycolor) color = "white";
 	else color = mycolor;
@@ -106,6 +96,8 @@ function drawSquare(pos,mycolor){
 	context.fillStyle = "black";
 	context.font = "12px Arial";
 	context.fillText(pos,i*sectionSize,j*sectionSize+10);
+
+	drawPiece(j,i)
 }
 
 function drawBoard () {
@@ -116,7 +108,8 @@ function drawBoard () {
 	}
 }
 
-function drawPiece(board,i,j){
+function drawPiece(i,j){
+
 	if(board[i][j] == 1)
 		drawCircle(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "darkgray");
 	else if(board[i][j] == -1)
@@ -126,14 +119,6 @@ function drawPiece(board,i,j){
 	}
 	else if (board[i][j] < 0) {
 		drawKing(j*sectionSize + sectionSize/2,i*sectionSize + sectionSize/2, "FireBrick");
-	}
-}
-
-function drawPieces(board){
-	for(let i=0;i<8;i++){
-		for(let j=0;j<8;j++){
-			drawPiece(board,i,j);
-		}
 	}
 }
 
@@ -172,8 +157,14 @@ function createPlay(pieces, playId){
 	input.onclick = function(){
 		if(this.checked){
 			chosen = this.playId;
-			for(let i=0;i<blue.length;i++) drawSquare(blue[i]);
-			for(let i=0;i<this.pieces.length;i++) drawSquare(this.pieces[i], "lightblue");
+			for(let i=0;i<blue.length;i++){
+				drawSquare(blue[i]);
+			}
+			blue = []
+			for(let i=0;i<this.pieces.length;i++){
+				drawSquare(this.pieces[i], "lightblue");
+				blue.push(this.pieces[i])
+			}
 		}
 	}
 }
