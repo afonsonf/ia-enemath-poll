@@ -1,0 +1,40 @@
+body {
+  background-color: #001628;
+  font-family: calibri;
+}
+
+.plays-container{
+  margin-top: 10px;
+  width: 100%;
+  text-align:center;
+  background-color: #f1f1f1;
+}
+
+.plays{
+  display: inline-block;
+  text-align:center;
+
+  margin:0px auto;
+
+  list-style-type: none;
+  padding: 0px;
+  text-align:center;
+}
+
+.play{
+  background-color: lightgray;
+  font-size: 20px;
+  word-wrap: break-word;
+  display: inline-block;
+  width: 200px;
+  margin: 10px;
+}
+
+.submit{
+  text-align:center;
+  margin-top: 10px;
+  width: 100%;
+}
+.submitB{
+  font-size: 30px;
+}
