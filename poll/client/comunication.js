@@ -1,5 +1,5 @@
-const url = "http://localhost:8134";
-// const url = "http://twserver.alunos.dcc.fc.up.pt:8134";
+// const url = "http://localhost:8134";
+const url = "http://twserver.alunos.dcc.fc.up.pt:8134";
 
 function postData(url = '', data = {}) {
     return fetch(url, {
