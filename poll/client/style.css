@@ -1,15 +1,18 @@
+body {
+  background-color: #001628;
+  font-family: calibri;
+}
+
 .plays-container{
-  margin-top: 50px;
+  margin-top: 10px;
   width: 100%;
   text-align:center;
+  background-color: #f1f1f1;
 }
+
 .plays{
   display: inline-block;
   text-align:center;
-
-  border-style:solid;
-  border-width:5px;
-  border-color:gray;
 
   margin:0px auto;
 
@@ -29,7 +32,7 @@
 
 .submit{
   text-align:center;
-  margin-top: 50px;
+  margin-top: 10px;
   width: 100%;
 }
 .submitB{

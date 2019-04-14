@@ -1,0 +1,46 @@
+body {
+  background-color: #001628;
+  font-family: calibri;
+}
+
+.text-container{
+  color: black;
+  padding: 10px;
+  background-color: #f1f1f1;
+  height: 300px;
+}
+
+.text{
+  display: inline-block;
+}
+
+.text-container a{
+  color: black;
+}
+
+.text-container a:visited{
+  color: gray;
+}
+
+.fcup{
+  width: 60%;
+  display: block;
+  margin-top: 10px;
+}
+
+.fcup img{
+  max-width: 100%;
+  margin-left: 10px;
+}
+
+.nucc{
+  float: right;
+  margin-top: 10px;
+  width: 30%;
+}
+
+.nucc img{
+  float: right;
+  max-width: 100%;
+  margin-left: 10px;
+}

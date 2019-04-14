@@ -99,7 +99,7 @@ function drawSquare(pos,mycolor){
 
 	context.fillStyle = "black";
 	context.font = "12px Arial";
-	context.fillText(pos,i*sectionSize,j*sectionSize+10);
+	context.fillText(pos,i*sectionSize+1,j*sectionSize+10);
 
 	drawPiece(j,i)
 }

@@ -20,7 +20,7 @@
 
 /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header div.logo {
-  font-size: 25px;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
 }
