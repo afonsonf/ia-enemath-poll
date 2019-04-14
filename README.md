@@ -1,3 +1,4 @@
-## IA ENEMath Poll
-
-implemetation of poll to vote for next move of the game
+## IA ENEMath Web
+Website.
+<br>
+Client and Server for the poll.
