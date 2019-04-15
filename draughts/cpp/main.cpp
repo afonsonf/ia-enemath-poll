@@ -18,14 +18,14 @@ int main(){
 
   /*-----------------------------------------------------------*/
 
-  MCTS *p1 = new MCTS(100000, first_player);
+  // MCTS *p1 = new MCTS(100000, first_player);
   // MCTS *p2 = new MCTS(100000, first_player);
 
-  // Minimax *p1 = new Minimax(6,first_player, 1);
-  // Minimax *p2 = new Minimax(6,first_player, 1);
+  // Minimax *p1 = new Minimax(12,first_player, 1);
+  Minimax *p2 = new Minimax(10,first_player, 1);
 
-  // Human *p1 = new Human(first_player);
-  Human *p2 = new Human(first_player);
+  Human *p1 = new Human(first_player);
+  // Human *p2 = new Human(first_player);
 
   /*-----------------------------------------------------------*/
 
@@ -58,10 +58,13 @@ int main(){
           d++;
           printf("draw   (%2d::%2d::%2d)\n",w,d,l);
         }
+
+        p1->print2poll();
+        p2->print2poll();
         break;
       }
 
-      if(plays>120){
+      if(plays>500){
         d++;
         printf("draw   (%2d::%2d::%2d)\n",w,d,l);
         break;

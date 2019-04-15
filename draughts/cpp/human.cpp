@@ -27,6 +27,20 @@ int Human::getInput(int sz){
   return int(res);
 }
 
+void Human::print2poll(){
+  int fdout = open("input", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR);
+  int save_out = dup(STDOUT_FILENO);
+  dup2(fdout, STDOUT_FILENO);
+  close(fdout);
+
+  boardPrint();
+  playsPrint();
+  lastPrint();
+  fflush(stdout);
+
+  dup2(save_out, STDOUT_FILENO);
+}
+
 void Human::boardPrint(){
   printf("[");
   for(int j=7;j>0;j--){
@@ -43,6 +57,11 @@ void Human::boardPrint(){
 void Human::playsPrint(){
   auto lst_plays = board->getPlays(player);
   int sz = lst_plays.size();
+
+  if(sz == 0){
+    printf("[]\n");
+    return;
+  }
 
   printf("[");
   for(int i=0;i<sz-1;i++){
@@ -126,29 +145,18 @@ void Human::search(){
   auto lst_plays = board->getPlays(player);
   int sz = lst_plays.size();
 
-  int fdout = open("input", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR);
-  int save_out = dup(STDOUT_FILENO);
-  dup2(fdout, STDOUT_FILENO);
-  close(fdout);
+  print2poll();
 
-  boardPrint();
-  playsPrint();
-  lastPrint();
-  fflush(stdout);
-
-  dup2(save_out, STDOUT_FILENO);
-
+  board->print_board();
   char s[1000];
   memset(s, '\0', sizeof s);
   while(strcmp(s,"y") && strcmp(s,"yes")){
-    board->print_board();
     for(int i=0;i<sz;i++){
       printf("%d: ",i);
       printPlay(lst_plays[i]);
     }printf("\n");
     index = getInput(sz);
     board->play(lst_plays[index]);
-    board->print_board();
     board->rmplay();
 
     memset(s, '\0', sizeof s);

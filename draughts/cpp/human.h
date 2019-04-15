@@ -25,6 +25,7 @@ public:
   void search();
   bool inRange(int x, int i, int j);
 
+  void print2poll();
   void boardPrint();
   void playsPrint();
   void lastPrint();

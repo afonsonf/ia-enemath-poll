@@ -74,5 +74,7 @@ public:
   void backpropagate(Node *node, int res);
   void backpropagate_aux(Node *node, double val);
 
+  void print2poll(){}
+
 };
 #endif //MCTS_H

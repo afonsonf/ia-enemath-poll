@@ -23,6 +23,7 @@ public:
 
 	void init(Board *board);
 	void play(Play p);
+	void print2poll(){}
 
 	void search();
 	int max_value(Board *board, int alfa, int beta, int depth_max);
